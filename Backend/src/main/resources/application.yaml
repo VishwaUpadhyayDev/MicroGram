@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: microgram
+  datasource:
+    url: jdbc:postgresql://db.bewsaziliymslcjjvscq.supabase.co:5432/postgres
+    username: postgres
+    password: U87akXVq4k5QIKSc
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
