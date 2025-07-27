@@ -1,70 +1,107 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Light mode colors */
+  --bg-dark: hsl(30 8% 92%);
+  --bg: hsl(30 12% 96%);
+  --bg-light: hsl(30 20% 99%);
+  --text: hsl(30 15% 15%);
+  --text-muted: hsl(30 8% 45%);
+  --highlight: hsl(30 20% 98%);
+  --border: hsl(30 6% 65%);
+  --border-muted: hsl(30 8% 75%);
+  --primary: hsl(150 25% 35%);
+  --secondary: hsl(25 35% 55%);
+  --danger: hsl(0 35% 55%);
+  --warning: hsl(40 45% 50%);
+  --success: hsl(150 35% 45%);
+  --info: hsl(210 25% 55%);
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors */
+    --bg-dark: hsl(30 8% 8%);
+    --bg: hsl(30 6% 12%);
+    --bg-light: hsl(30 8% 16%);
+    --text: hsl(30 15% 85%);
+    --text-muted: hsl(30 8% 65%);
+    --highlight: hsl(30 8% 20%);
+    --border: hsl(30 6% 35%);
+    --border-muted: hsl(30 8% 25%);
+    --primary: hsl(150 25% 65%);
+    --secondary: hsl(25 35% 65%);
+    --danger: hsl(0 35% 65%);
+    --warning: hsl(40 45% 65%);
+    --success: hsl(150 35% 65%);
+    --info: hsl(210 25% 65%);
+  }
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
+
 a:hover {
-  color: #535bf2;
+  color: var(--text);
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
   min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--bg-light);
+  color: var(--text);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.15s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:hover {
+  background-color: var(--highlight);
+  border-color: var(--border-muted);
+}
+
+button:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-muted);
 }
