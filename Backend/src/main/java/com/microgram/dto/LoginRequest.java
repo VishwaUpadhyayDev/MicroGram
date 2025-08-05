@@ -1,12 +1,16 @@
 package com.microgram.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 
+@Schema(description = "Login request payload")
 public class LoginRequest {
     
+    @Schema(description = "Username or email address", example = "john_doe")
     @NotBlank(message = "Username/email cannot be blank")
     private String usernameOrEmail;
     
+    @Schema(description = "User password", example = "password123")
     @NotBlank(message = "Password cannot be blank")
     private String password;
 

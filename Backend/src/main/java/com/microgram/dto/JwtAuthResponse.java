@@ -1,9 +1,17 @@
 package com.microgram.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "JWT authentication response")
 public class JwtAuthResponse {
     
+    @Schema(description = "JWT access token", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
     private String accessToken;
+    
+    @Schema(description = "Token type", example = "Bearer")
     private String tokenType = "Bearer";
+    
+    @Schema(description = "Username", example = "john_doe")
     private String username;
     
     public JwtAuthResponse(String accessToken, String username) {
