@@ -34,4 +34,4 @@ build/
 
 ### Environment Files ###
 .env
-secrets.properties
+secret.properties
