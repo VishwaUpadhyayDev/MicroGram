@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import com.microgram.security.OAuth2UserPrincipal;
 
 import java.security.Key;
 import java.util.Date;
@@ -28,13 +29,24 @@ public class JwtTokenProvider {
     private long jwtExpiration; // 24 hours
 
     public String generateToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username;
+        
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof OAuth2UserPrincipal) {
+            OAuth2UserPrincipal oauth2User = (OAuth2UserPrincipal) principal;
+            username = oauth2User.getName();
+        } else if (principal instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) principal;
+            username = userDetails.getUsername();
+        } else {
+            username = principal.toString();
+        }
         
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration);
         
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)
