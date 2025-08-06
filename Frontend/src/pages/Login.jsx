@@ -8,6 +8,7 @@ import {
   clearAuthState,
 } from "../features/authSlice";
 import { mockAuthAPI } from "../utils/mockApi";
+import BubbleBackground from "../components/BubbleBackground";
 
 function Login() {
   const [credentials, setCredentials] = useState({
@@ -40,17 +41,25 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ backgroundColor: 'var(--bg)' }}>
-      <div className="w-full max-w-sm">
+    <div
+      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      style={{ backgroundColor: "var(--bg)" }}
+    >
+      <BubbleBackground bubbleCount={50} />
+
+      <div className="w-full max-w-sm relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-semibold mb-2" style={{ color: 'var(--text)' }}>
+          <h1
+            className="text-2xl font-semibold mb-2"
+            style={{ color: "var(--text)" }}
+          >
             Welcome back
           </h1>
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+          <p className="text-sm" style={{ color: "var(--text-muted)" }}>
             Sign in to continue your conversations
           </p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <input
@@ -58,34 +67,47 @@ function Login() {
               required
               placeholder="Username"
               value={credentials.username}
-              onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
+              onChange={(e) =>
+                setCredentials((prev) => ({
+                  ...prev,
+                  username: e.target.value,
+                }))
+              }
               className="w-full px-3 py-2 rounded-md border transition-colors"
               style={{
-                backgroundColor: 'var(--bg-light)',
-                borderColor: 'var(--border)',
-                color: 'var(--text)'
+                backgroundColor: "var(--bg-light)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
               }}
             />
           </div>
-          
+
           <div>
             <input
               type="password"
               required
               placeholder="Password"
               value={credentials.password}
-              onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+              onChange={(e) =>
+                setCredentials((prev) => ({
+                  ...prev,
+                  password: e.target.value,
+                }))
+              }
               className="w-full px-3 py-2 rounded-md border transition-colors"
               style={{
-                backgroundColor: 'var(--bg-light)',
-                borderColor: 'var(--border)',
-                color: 'var(--text)'
+                backgroundColor: "var(--bg-light)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
               }}
             />
           </div>
 
           {error && (
-            <div className="text-sm text-center" style={{ color: 'var(--danger)' }}>
+            <div
+              className="text-sm text-center"
+              style={{ color: "var(--danger)" }}
+            >
               {error}
             </div>
           )}
@@ -95,9 +117,9 @@ function Login() {
             disabled={loading}
             className="w-full py-2 px-4 rounded-md font-medium transition-colors disabled:opacity-50"
             style={{
-              backgroundColor: 'var(--primary)',
-              color: 'var(--bg-light)',
-              border: '1px solid var(--primary)'
+              backgroundColor: "var(--primary)",
+              color: "var(--bg-light)",
+              border: "1px solid var(--primary)",
             }}
           >
             {loading ? "Signing in..." : "Sign in"}
@@ -105,7 +127,11 @@ function Login() {
         </form>
 
         <div className="text-center mt-6">
-          <Link to="/signup" className="text-sm" style={{ color: 'var(--primary)' }}>
+          <Link
+            to="/signup"
+            className="text-sm"
+            style={{ color: "var(--primary)" }}
+          >
             New to MicroGram? Create an account
           </Link>
         </div>

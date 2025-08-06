@@ -1,19 +1,14 @@
-import { useSelector } from "react-redux";
+import BubbleBackground from "../../components/BubbleBackground";
+import Desktop from "../../components/Desktop/Desktop";
+import Mobile from "../../components/Mobile/Mobile";
 
 function Home() {
-  const { user } = useSelector((state) => state.auth);
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <h1 className="text-4xl font-bold text-gray-900">
-        Welcome to MicroGram{user ? `, ${user.username}` : ""}
-      </h1>
-      {user && (
-        <div className="mt-4 text-gray-600">
-          Your token: {user.token.substring(0, 20)}...
-        </div>
-      )}
-    </div>
+    <main className="h-full overflow-hidden bg-[var(--bg)] relative">
+      {/* <BubbleBackground bubbleCount={8} /> */}
+      <Desktop />
+      <Mobile />
+    </main>
   );
 }
 
