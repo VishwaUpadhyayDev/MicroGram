@@ -31,6 +31,27 @@ public class Users {
     
     @Column(nullable = false)
     private String role;
+    
+    @Column(name = "display_name", length = 100)
+    private String displayName;
+    
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+    
+    @Column(name = "profile_picture_url", length = 500)
+    private String profilePictureUrl;
+    
+    @Column(name = "is_public", nullable = false)
+    private Boolean isPublic = true;
+    
+    @Column(name = "follower_count", nullable = false)
+    private Integer followerCount = 0;
+    
+    @Column(name = "following_count", nullable = false)
+    private Integer followingCount = 0;
+    
+    @Column(name = "post_count", nullable = false)
+    private Integer postCount = 0;
 
     @Column(name = "created_date", nullable = false, updatable = false)
     private LocalDateTime createdDate;
@@ -123,5 +144,61 @@ public class Users {
 
     public void setUpdatedDate(LocalDateTime updatedDate) {
         this.updatedDate = updatedDate;
+    }
+    
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+    public Boolean getIsPublic() {
+        return isPublic;
+    }
+
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public Integer getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(Integer followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public Integer getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(Integer followingCount) {
+        this.followingCount = followingCount;
+    }
+
+    public Integer getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(Integer postCount) {
+        this.postCount = postCount;
     }
 }
