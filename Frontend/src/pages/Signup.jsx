@@ -2,61 +2,72 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import {
-  loginStart,
-  loginSuccess,
-  loginFailure,
+  signupStart,
+  signupSuccess,
+  signupFailure,
   clearAuthState,
 } from "../features/authSlice";
 import { mockAuthAPI } from "../utils/mockApi";
 import BubbleBackground from "../components/BubbleBackground";
 
-function Login() {
-  const [credentials, setCredentials] = useState({
+function Signup() {
+  const [userData, setUserData] = useState({
     username: "",
+    email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, isAuthenticated } = useSelector(
+  const { loading, error, registrationSuccess } = useSelector(
     (state) => state.auth
   );
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/app/home");
+    dispatch(clearAuthState());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (registrationSuccess) {
+      navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [registrationSuccess, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginStart());
+
+    if (userData.password !== userData.confirmPassword) {
+      dispatch(signupFailure("Passwords do not match"));
+      return;
+    }
+
+    dispatch(signupStart());
 
     try {
-      const user = await mockAuthAPI.login(credentials);
-      dispatch(loginSuccess(user));
+      await mockAuthAPI.signup(userData);
+      dispatch(signupSuccess());
     } catch (err) {
-      dispatch(loginFailure(err.message));
+      dispatch(signupFailure(err.message));
     }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "var(--bg)" }}
     >
       <BubbleBackground bubbleCount={50} />
-
-      <div className="w-full max-w-sm relative z-10">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1
             className="text-2xl font-semibold mb-2"
             style={{ color: "var(--text)" }}
           >
-            Welcome back
+            Join MicroGram
           </h1>
           <p className="text-sm" style={{ color: "var(--text-muted)" }}>
-            Sign in to continue your conversations
+            Start meaningful conversations today
           </p>
         </div>
 
@@ -66,12 +77,27 @@ function Login() {
               type="text"
               required
               placeholder="Username"
-              value={credentials.username}
+              value={userData.username}
               onChange={(e) =>
-                setCredentials((prev) => ({
-                  ...prev,
-                  username: e.target.value,
-                }))
+                setUserData((prev) => ({ ...prev, username: e.target.value }))
+              }
+              className="w-full px-3 py-2 rounded-md border transition-colors"
+              style={{
+                backgroundColor: "var(--bg-light)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
+              }}
+            />
+          </div>
+
+          <div>
+            <input
+              type="email"
+              required
+              placeholder="Email address"
+              value={userData.email}
+              onChange={(e) =>
+                setUserData((prev) => ({ ...prev, email: e.target.value }))
               }
               className="w-full px-3 py-2 rounded-md border transition-colors"
               style={{
@@ -87,11 +113,29 @@ function Login() {
               type="password"
               required
               placeholder="Password"
-              value={credentials.password}
+              value={userData.password}
               onChange={(e) =>
-                setCredentials((prev) => ({
+                setUserData((prev) => ({ ...prev, password: e.target.value }))
+              }
+              className="w-full px-3 py-2 rounded-md border transition-colors"
+              style={{
+                backgroundColor: "var(--bg-light)",
+                borderColor: "var(--border)",
+                color: "var(--text)",
+              }}
+            />
+          </div>
+
+          <div>
+            <input
+              type="password"
+              required
+              placeholder="Confirm password"
+              value={userData.confirmPassword}
+              onChange={(e) =>
+                setUserData((prev) => ({
                   ...prev,
-                  password: e.target.value,
+                  confirmPassword: e.target.value,
                 }))
               }
               className="w-full px-3 py-2 rounded-md border transition-colors"
@@ -122,17 +166,17 @@ function Login() {
               border: "1px solid var(--primary)",
             }}
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {loading ? "Creating account..." : "Create account"}
           </button>
         </form>
 
         <div className="text-center mt-6">
           <Link
-            to="/signup"
+            to="/login"
             className="text-sm"
             style={{ color: "var(--primary)" }}
           >
-            New to MicroGram? Create an account
+            Already have an account? Sign in
           </Link>
         </div>
       </div>
@@ -140,4 +184,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
