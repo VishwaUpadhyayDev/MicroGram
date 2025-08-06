@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth2 Success</title>
+</head>
+<body>
+    <h1>Google OAuth2 Login Successful!</h1>
+    <p><strong>JWT Token:</strong></p>
+    <textarea rows="5" cols="80" readonly th:text="${token}"></textarea>
+    <br><br>
+    <p>You can now use this token to authenticate API requests.</p>
+    <p>Add it to your requests as: <code>Authorization: Bearer [token]</code></p>
+</body>
+</html>

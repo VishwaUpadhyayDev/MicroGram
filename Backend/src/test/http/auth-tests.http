@@ -1,0 +1,37 @@
+### Register a new user
+POST http://localhost:8080/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123",
+  "name": "Test User"
+}
+
+### Login with local credentials
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "usernameOrEmail": "testuser",
+  "password": "password123"
+}
+
+### Store the JWT token from the login response
+@authToken = {{login.response.body.$.accessToken}}
+
+### Test authenticated endpoint with JWT
+GET http://localhost:8080/api/users/me
+Authorization: Bearer {{authToken}}
+
+### Logout
+POST http://localhost:8080/api/auth/logout
+Authorization: Bearer {{authToken}}
+
+### OAuth2 Login URLs (open these in browser)
+# Google Login
+# http://localhost:8080/oauth2/authorize/google
+
+# Facebook Login
+# http://localhost:8080/oauth2/authorize/facebook

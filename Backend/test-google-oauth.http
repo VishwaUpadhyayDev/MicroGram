@@ -1,0 +1,11 @@
+### Test Google OAuth Login
+# Open this URL in browser:
+# http://localhost:8080/oauth2/authorize/google
+
+### After getting JWT token from OAuth, test authenticated endpoint
+GET http://localhost:8080/api/users/me
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Example with placeholder token
+GET http://localhost:8080/api/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImlhdCI6MTYzOTU2NzIwMCwiZXhwIjoxNjM5NjUzNjAwfQ.example
