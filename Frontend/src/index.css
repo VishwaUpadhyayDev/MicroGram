@@ -1,70 +1,123 @@
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+    sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Light mode colors */
+  --bg-dark: hsl(30 8% 92%);
+  --bg: hsl(30 12% 96%);
+  --bg-light: hsl(30 20% 99%);
+  --text: hsl(30 15% 15%);
+  --text-muted: hsl(30 8% 45%);
+  --highlight: hsl(30 20% 98%);
+  --border: hsl(30 6% 65%);
+  --border-muted: hsl(30 8% 75%);
+  --primary: hsl(150 25% 35%);
+  --secondary: hsl(25 35% 55%);
+  --danger: hsl(0 35% 55%);
+  --warning: hsl(40 45% 50%);
+  --success: hsl(150 35% 45%);
+  --info: hsl(210 25% 55%);
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode colors */
+    --bg-dark: hsl(30 8% 8%);
+    --bg: hsl(30 6% 12%);
+    --bg-light: hsl(30 8% 16%);
+    --text: hsl(30 15% 85%);
+    --text-muted: hsl(30 8% 65%);
+    --highlight: hsl(30 8% 20%);
+    --border: hsl(30 6% 35%);
+    --border-muted: hsl(30 8% 25%);
+    --primary: hsl(150 25% 65%);
+    --secondary: hsl(25 35% 65%);
+    --danger: hsl(0 35% 65%);
+    --warning: hsl(40 45% 65%);
+    --success: hsl(150 35% 65%);
+    --info: hsl(210 25% 65%);
+  }
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
+
 a:hover {
-  color: #535bf2;
+  color: var(--text);
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+#root {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: max-content 1fr;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+::-webkit-scrollbar-track {
+  background: var(--bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-muted);
+}
+
+/* Bubble Animation */
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(100vh) translateX(var(--drift)) rotate(0deg) scale(1);
+    opacity: 0;
   }
-  a:hover {
-    color: #747bff;
+  10% {
+    opacity: 0.1;
   }
-  button {
-    background-color: #f9f9f9;
+  80% {
+    transform: translateY(20vh) translateX(calc(var(--drift) * 1.5))
+      rotate(288deg) scale(1.2);
+    opacity: 0.1;
   }
+  92% {
+    transform: translateY(-30px) translateX(calc(var(--drift) * 2))
+      rotate(331deg) scale(1.5);
+    opacity: 0.08;
+  }
+  98% {
+    transform: translateY(-70px) translateX(calc(var(--drift) * 2))
+      rotate(353deg) scale(3.5);
+    opacity: 0.02;
+  }
+  100% {
+    transform: translateY(-100px) translateX(calc(var(--drift) * 2))
+      rotate(360deg) scale(5);
+    opacity: 0;
+  }
+}
+
+.animate-bubble-rise {
+  animation: bubble-rise linear infinite;
+  animation-duration: calc(10s + var(--drift) * 2s);
+  animation-delay: calc(var(--delay) * 1s);
+  transform: translateY(calc(100vh + 10px));
+  border: 2px solid var(--border-muted);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

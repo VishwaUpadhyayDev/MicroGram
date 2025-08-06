@@ -1,34 +1,16 @@
-import { Routes, Route } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
 import "./App.css";
-import Login from "./pages/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
-
-function Home() {
-  const { user } = useSelector((state) => state.auth);
-
-  return (
-    <div>
-      <h1>Welcome to MicroGram{user ? `, ${user.username}` : ""}</h1>
-    </div>
-  );
-}
+import { useSessionManager } from "./hooks/useSessionManager";
+import Header from "./components/Header/Header";
 
 function App() {
+  useSessionManager();
+
   return (
-    <div className="app">
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </div>
+    <>
+      <Header />
+      <Outlet />
+    </>
   );
 }
 
