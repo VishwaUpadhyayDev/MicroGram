@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.microgram</groupId>
 	<artifactId>microgram</artifactId>
-	<version>1.0.0</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>microgram</name>
-	<description>Microgram - A social media platform</description>
+	<description>Microgram</description>
 	<url/>
 	<licenses>
 		<license/>
