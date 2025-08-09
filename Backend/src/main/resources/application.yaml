@@ -1,6 +1,7 @@
 spring:
   application:
     name: microgram
+    version: 1.0.0
   config:
     import: optional:classpath:secret.properties
   datasource:
