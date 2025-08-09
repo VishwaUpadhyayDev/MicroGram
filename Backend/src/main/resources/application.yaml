@@ -5,22 +5,18 @@ spring:
   config:
     import: optional:classpath:secret.properties
   datasource:
-    url: jdbc:postgresql://db.bewsaziliymslcjjvscq.supabase.co:5432/postgres?currentSchema=microgram
+    url: jdbc:postgresql://db.bewsaziliymslcjjvscq.supabase.co:5432/postgres
     username: postgres
     password: ${DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
-  flyway:
-    baseline-on-migrate: true
-    schemas: microgram
-    default-schema: microgram
   security:
     oauth2:
       client:
