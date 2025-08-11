@@ -6,11 +6,11 @@ import jakarta.validation.constraints.NotBlank;
 @Schema(description = "Login request payload")
 public class LoginRequest {
     
-    @Schema(description = "Username or email address", example = "john_doe")
+    @Schema(description = "Username or email address", example = "sarah_photographer")
     @NotBlank(message = "Username/email cannot be blank")
     private String usernameOrEmail;
     
-    @Schema(description = "User password", example = "password123")
+    @Schema(description = "User password", example = "MySecurePass2024!")
     @NotBlank(message = "Password cannot be blank")
     private String password;
 
