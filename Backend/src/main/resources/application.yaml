@@ -39,6 +39,8 @@ app:
   jwt:
     secret: ${JWT_SECRET}
     expiration: 86400000 # 24 hours in milliseconds
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:3000}
 
 springdoc:
   api-docs:

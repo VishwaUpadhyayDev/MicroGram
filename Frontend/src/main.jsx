@@ -7,8 +7,10 @@ import "./index.css";
 
 // Routes
 import App from "./App.jsx";
-import { Login, Signup, Home, NotFound, ErrorPage } from "./pages";
+import { Login, Signup, Home, NotFound, ErrorPage, Profile } from "./pages";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OAuthCallback from "./components/OAuthCallback";
+
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,10 @@ const router = createBrowserRouter([
             path: "home",
             element: <Home />,
           },
+          {
+            path: "profile",
+            element: <Profile />,
+          },
         ],
       },
       {
@@ -37,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "signup",
         element: <Signup />,
+      },
+      {
+        path: "oauth/callback",
+        element: <OAuthCallback />,
       },
       {
         path: "*",

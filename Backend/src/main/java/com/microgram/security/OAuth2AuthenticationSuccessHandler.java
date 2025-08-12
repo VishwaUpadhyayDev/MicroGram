@@ -3,6 +3,7 @@ package com.microgram.security;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,9 @@ import java.io.IOException;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenProvider tokenProvider;
+    
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     public OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
@@ -30,7 +34,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String token = tokenProvider.generateToken(authentication);
         
         // Redirect to frontend with token
-        return UriComponentsBuilder.fromUriString("/oauth2/redirect")
+        return UriComponentsBuilder.fromUriString(frontendUrl + "/oauth/callback")
                 .queryParam("token", token)
                 .build().toUriString();
     }
