@@ -64,6 +64,10 @@ body {
   grid-template-rows: max-content 1fr;
 }
 
+button{
+  cursor: pointer;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

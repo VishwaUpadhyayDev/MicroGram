@@ -7,7 +7,7 @@ import {
   signupFailure,
   clearAuthState,
 } from "../features/authSlice";
-import { mockAuthAPI } from "../utils/mockApi";
+import { authAPI } from "../utils/api";
 import BubbleBackground from "../components/BubbleBackground";
 
 function Signup() {
@@ -45,11 +45,15 @@ function Signup() {
     dispatch(signupStart());
 
     try {
-      await mockAuthAPI.signup(userData);
+      await authAPI.signup(userData);
       dispatch(signupSuccess());
     } catch (err) {
       dispatch(signupFailure(err.message));
     }
+  };
+
+  const handleGoogleSignup = () => {
+    authAPI.initiateGoogleLogin();
   };
 
   return (
@@ -167,6 +171,28 @@ function Signup() {
             }}
           >
             {loading ? "Creating account..." : "Create account"}
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t" style={{ borderColor: "var(--border)" }}></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2" style={{ backgroundColor: "var(--bg)", color: "var(--text-muted)" }}>Or</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleSignup}
+            className="w-full py-2 px-4 rounded-md font-medium transition-colors border"
+            style={{
+              backgroundColor: "var(--bg-light)",
+              color: "var(--text)",
+              borderColor: "var(--border)",
+            }}
+          >
+            Sign up with Google
           </button>
         </form>
 

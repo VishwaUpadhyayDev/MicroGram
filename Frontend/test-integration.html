@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Integration Test</title>
+</head>
+<body>
+    <h1>MicroGram API Integration Test</h1>
+    
+    <div>
+        <h2>Login Test</h2>
+        <input type="text" id="username" placeholder="Username" value="testuser">
+        <input type="password" id="password" placeholder="Password" value="password123">
+        <button onclick="testLogin()">Test Login</button>
+    </div>
+    
+    <div>
+        <h2>Google OAuth Test</h2>
+        <button onclick="testGoogleAuth()">Test Google Login</button>
+    </div>
+    
+    <div>
+        <h2>Profile Test</h2>
+        <button onclick="testProfile()">Get Profile</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api'; // Update this to use env vars if needed
+        
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const result = await response.json();
+                document.getElementById('results').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+                
+                if (result.accessToken) {
+                    localStorage.setItem('token', result.accessToken);
+                }
+            } catch (error) {
+                document.getElementById('results').innerHTML = `Error: ${error.message}`;
+            }
+        }
+        
+        function testGoogleAuth() {
+            window.location.href = 'http://localhost:8080/oauth2/authorize/google'; // Update this to use env vars if needed
+        }
+        
+        async function testProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                document.getElementById('results').innerHTML = 'No token found. Please login first.';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/users/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                
+                const result = await response.json();
+                document.getElementById('results').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('results').innerHTML = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
