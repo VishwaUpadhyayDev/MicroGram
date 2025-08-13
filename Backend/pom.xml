@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.microgram</groupId>
 	<artifactId>microgram</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>microgram</name>
-	<description>Microgram</description>
+	<description>Microgram - A social media platform</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -50,6 +50,16 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-database-postgresql</artifactId>
 		</dependency>
 		
 		<!-- Security and JWT dependencies -->
