@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
  * Entity class representing users in the system
  */
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "microgram")
 public class Users {
 
     @Id

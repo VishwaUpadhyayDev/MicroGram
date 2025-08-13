@@ -8,22 +8,22 @@ import jakarta.validation.constraints.Size;
 @Schema(description = "User registration request payload")
 public class SignupRequest {
     
-    @Schema(description = "Unique username", example = "john_doe")
+    @Schema(description = "Unique username", example = "alex_traveler")
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     private String username;
     
-    @Schema(description = "Email address", example = "john@example.com")
+    @Schema(description = "Email address", example = "alex.traveler@gmail.com")
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email should be valid")
     private String email;
     
-    @Schema(description = "Password (minimum 6 characters)", example = "password123")
+    @Schema(description = "Password (minimum 6 characters)", example = "TravelLife2024!")
     @NotBlank(message = "Password cannot be blank")
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
     
-    @Schema(description = "Full name", example = "John Doe")
+    @Schema(description = "Full name", example = "Alex Rodriguez")
     @NotBlank(message = "Name cannot be blank")
     private String name;
 
