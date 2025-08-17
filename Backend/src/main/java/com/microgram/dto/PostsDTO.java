@@ -1,14 +1,29 @@
 package com.microgram.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
+@Schema(description = "Post data transfer object")
 public class PostsDTO {
+    @Schema(description = "Post ID", example = "123")
     private Long id;
+    
+    @Schema(description = "User ID who created the post", example = "45")
     private Long userId;
+    
+    @Schema(description = "Username of post creator", example = "sarah_photographer")
     private String username;
+    
+    @Schema(description = "Post content/caption", example = "Just captured this amazing sunset at the beach! 🌅 #photography #sunset")
     private String content;
+    
+    @Schema(description = "Image URL", example = "https://microgram-images.s3.amazonaws.com/posts/sunset-beach-2024.jpg")
     private String imageUrl;
+    
+    @Schema(description = "Number of likes", example = "127")
     private Integer likesCount;
+    
+    @Schema(description = "Post creation timestamp", example = "2024-01-15T18:30:00")
     private LocalDateTime createdAt;
 
     public PostsDTO() {

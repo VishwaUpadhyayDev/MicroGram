@@ -7,7 +7,7 @@ import {
   loginFailure,
   clearAuthState,
 } from "../features/authSlice";
-import { mockAuthAPI } from "../utils/mockApi";
+import { authAPI } from "../utils/api";
 import BubbleBackground from "../components/BubbleBackground";
 
 function Login() {
@@ -33,11 +33,15 @@ function Login() {
     dispatch(loginStart());
 
     try {
-      const user = await mockAuthAPI.login(credentials);
+      const user = await authAPI.login(credentials);
       dispatch(loginSuccess(user));
     } catch (err) {
       dispatch(loginFailure(err.message));
     }
+  };
+
+  const handleGoogleLogin = () => {
+    authAPI.initiateGoogleLogin();
   };
 
   return (
@@ -123,6 +127,28 @@ function Login() {
             }}
           >
             {loading ? "Signing in..." : "Sign in"}
+          </button>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t" style={{ borderColor: "var(--border)" }}></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2" style={{ backgroundColor: "var(--bg)", color: "var(--text-muted)" }}>Or</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full py-2 px-4 rounded-md font-medium transition-colors border"
+            style={{
+              backgroundColor: "var(--bg-light)",
+              color: "var(--text)",
+              borderColor: "var(--border)",
+            }}
+          >
+            Continue with Google
           </button>
         </form>
 

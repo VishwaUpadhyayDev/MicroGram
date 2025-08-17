@@ -29,7 +29,7 @@ const authSlice = createSlice({
     loginSuccess: (state, action) => {
       state.loading = false;
       state.isAuthenticated = true;
-      state.user = { ...action.payload, expiresAt: Date.now() + 15 * 60 * 1000 }; // 15 min mock expiry
+      state.user = action.payload;
       state.error = null;
       localStorage.setItem('user', JSON.stringify(state.user));
     },
@@ -45,9 +45,9 @@ const authSlice = createSlice({
       state.sessionTimer = null;
       localStorage.removeItem('user');
     },
-    renewSession: (state, action) => {
+    updateUser: (state, action) => {
       if (state.user) {
-        state.user = { ...state.user, ...action.payload, expiresAt: Date.now() + 15 * 60 * 1000 };
+        state.user = { ...state.user, ...action.payload };
         localStorage.setItem('user', JSON.stringify(state.user));
       }
     },
@@ -82,6 +82,6 @@ export const {
   signupSuccess,
   signupFailure,
   clearAuthState,
-  renewSession,
+  updateUser,
 } = authSlice.actions;
 export default authSlice.reducer;

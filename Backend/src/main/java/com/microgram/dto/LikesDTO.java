@@ -1,11 +1,20 @@
 package com.microgram.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 
+@Schema(description = "Like data transfer object")
 public class LikesDTO {
+    @Schema(description = "Like ID", example = "456")
     private Long id;
+    
+    @Schema(description = "User ID who liked the post", example = "89")
     private Long userId;
+    
+    @Schema(description = "Post ID that was liked", example = "123")
     private Long postId;
+    
+    @Schema(description = "Like creation timestamp", example = "2024-01-15T20:15:00")
     private LocalDateTime createdAt;
 
     public LikesDTO() {

@@ -5,13 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Profile update request")
 public class ProfileUpdateRequest {
 
-    @Schema(description = "Display name", example = "John Doe")
+    @Schema(description = "Display name", example = "Sarah Mitchell")
     private String displayName;
 
-    @Schema(description = "User bio", example = "Software Developer passionate about technology")
+    @Schema(description = "User bio", example = "📸 Travel photographer | 🌍 Exploring the world one shot at a time | 📍 Currently in Bali")
     private String bio;
 
-    @Schema(description = "Profile picture URL", example = "https://example.com/profile.jpg")
+    @Schema(description = "Profile picture URL", example = "https://microgram-profiles.s3.amazonaws.com/users/sarah_photographer_avatar.jpg")
     private String profilePictureUrl;
 
     @Schema(description = "Profile visibility", example = "true")

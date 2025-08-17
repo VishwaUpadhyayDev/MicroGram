@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Settings } from "lucide-react";
 import { logout } from "../../features/authSlice";
 
 function Header() {
@@ -60,6 +60,17 @@ function Header() {
                 }}
               >
                 <div className="py-1">
+                  <button
+                    onClick={() => {
+                      navigate("/app/profile");
+                      setIsDropdownOpen(false);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm flex items-center space-x-2 hover:bg-[var(--highlight)] transition-colors"
+                    style={{ color: "var(--text)" }}
+                  >
+                    <Settings size={16} />
+                    <span>Profile</span>
+                  </button>
                   <button
                     onClick={handleLogout}
                     className="w-full px-4 py-2 text-left text-sm flex items-center space-x-2 hover:bg-[var(--highlight)] transition-colors"
