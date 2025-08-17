@@ -30,13 +30,17 @@ public class CommentsService {
         List<Comments> comments = commentsRepository.findByPostId(postId);
         
         return comments.stream()
-            .map(comment -> new CommentsDTO(
-                comment.getId(),
-                comment.getUserId(),
-                comment.getCommentContent(),
-                comment.getCreatedAt()
-            ))
+            .map(this::mapToCommentsDTO)
             .collect(Collectors.toList());
+    }
+    
+    private CommentsDTO mapToCommentsDTO(Comments comment) {
+        return new CommentsDTO(
+            comment.getId(),
+            comment.getUserId(),
+            comment.getCommentContent(),
+            comment.getCreatedAt()
+        );
     }
     
     public boolean addComment(Long postId, Long userId, String commentContent) {

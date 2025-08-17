@@ -1,5 +1,6 @@
 package com.microgram.service;
 
+import com.microgram.dto.CreatePostRequest;
 import com.microgram.dto.PostsDTO;
 import com.microgram.model.Posts;
 import com.microgram.model.Users;
@@ -31,25 +32,31 @@ public class PostsService {
 
     public List<PostsDTO> getPostsByUserId(Long userId) {
         List<Posts> posts = postRepository.findByUserId(userId);
+        Optional<Users> user = userRepository.findById(userId);
+        String username = user.map(Users::getUsername).orElse(null);
         
         return posts.stream()
-            .map(post -> new PostsDTO(
-                post.getId(),
-                post.getUserId(),
-                null,
-                post.getContent(),
-                post.getImageUrl(),
-                post.getLikesCount(),
-                post.getCreatedAt()
-            ))
+            .map(post -> mapToPostsDTO(post, username))
             .collect(Collectors.toList());
     }
     
-    public boolean addPost(Long userId, String content, String imageUrl) {
+    private PostsDTO mapToPostsDTO(Posts post, String username) {
+        return new PostsDTO(
+            post.getId(),
+            post.getUserId(),
+            username,
+            post.getContent(),
+            post.getImageUrl(),
+            post.getLikesCount(),
+            post.getCreatedAt()
+        );
+    }
+    
+    public boolean addPost(CreatePostRequest request) {
         Posts post = new Posts();
-        post.setUserId(userId);
-        post.setContent(content);
-        post.setImageUrl(imageUrl);
+        post.setUserId(request.getUserId());
+        post.setContent(request.getContent());
+        post.setImageUrl(request.getImageUrl());
         
         postRepository.save(post);
         return true;

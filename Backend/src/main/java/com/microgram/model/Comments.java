@@ -11,18 +11,10 @@ public class Comments {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_post_id"))
-    private Posts post;
-    
-    @Column(name = "post_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "post_id", nullable = false)
     private Long postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_user_id"))
-    private Users user;
-    
-    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @Column(name = "comment_content", columnDefinition = "TEXT", nullable = false)
@@ -47,15 +39,6 @@ public class Comments {
         this.id = id;
     }
 
-    public Posts getPost() {
-        return post;
-    }
-
-    public void setPost(Posts post) {
-        this.post = post;
-        this.postId = post != null ? post.getId() : null;
-    }
-    
     public Long getPostId() {
         return postId;
     }
@@ -64,15 +47,6 @@ public class Comments {
         this.postId = postId;
     }
 
-    public Users getUser() {
-        return user;
-    }
-
-    public void setUser(Users user) {
-        this.user = user;
-        this.userId = user != null ? user.getId() : null;
-    }
-    
     public Long getUserId() {
         return userId;
     }
