@@ -1,5 +1,6 @@
 package com.microgram.service;
 
+import com.microgram.dto.ProfileResponse;
 import com.microgram.model.Users;
 import com.microgram.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,27 +15,17 @@ public class ProfileService {
     @Autowired
     private UserRepository userRepository;
 
-    public Optional<Map<String, Object>> getMyProfile(String username) {
+    public Optional<ProfileResponse> getMyProfile(String username) {
         Optional<Users> user = userRepository.findByUsername(username);
         
         if (user.isEmpty()) {
             return Optional.empty();
         }
         
-        Users u = user.get();
-        return Optional.of(Map.of(
-            "username", u.getUsername(),
-            "displayName", u.getDisplayName() != null ? u.getDisplayName() : "",
-            "bio", u.getBio() != null ? u.getBio() : "",
-            "profilePictureUrl", u.getProfilePictureUrl() != null ? u.getProfilePictureUrl() : "",
-            "followerCount", u.getFollowerCount(),
-            "followingCount", u.getFollowingCount(),
-            "postCount", u.getPostCount(),
-            "isPublic", u.getIsPublic()
-        ));
+        return Optional.of(mapToProfileResponse(user.get(), null));
     }
 
-    public Optional<Map<String, Object>> getUserProfile(String username, String currentUsername) {
+    public Optional<ProfileResponse> getUserProfile(String username, String currentUsername) {
         Optional<Users> user = userRepository.findByUsername(username);
         
         if (user.isEmpty()) {
@@ -48,19 +39,10 @@ public class ProfileService {
             return Optional.empty();
         }
         
-        return Optional.of(Map.of(
-            "username", u.getUsername(),
-            "displayName", u.getDisplayName() != null ? u.getDisplayName() : "",
-            "bio", u.getBio() != null ? u.getBio() : "",
-            "profilePictureUrl", u.getProfilePictureUrl() != null ? u.getProfilePictureUrl() : "",
-            "followerCount", u.getFollowerCount(),
-            "followingCount", u.getFollowingCount(),
-            "postCount", u.getPostCount(),
-            "isPublic", u.getIsPublic()
-        ));
+        return Optional.of(mapToProfileResponse(u, currentUsername));
     }
 
-    public Optional<Map<String, Object>> updateProfile(String username, Map<String, String> updates) {
+    public Optional<ProfileResponse> updateProfile(String username, Map<String, String> updates) {
         Optional<Users> userOpt = userRepository.findByUsername(username);
         
         if (userOpt.isEmpty()) {
@@ -84,15 +66,19 @@ public class ProfileService {
         
         userRepository.save(user);
         
-        return Optional.of(Map.of(
-            "username", user.getUsername(),
-            "displayName", user.getDisplayName() != null ? user.getDisplayName() : "",
-            "bio", user.getBio() != null ? user.getBio() : "",
-            "profilePictureUrl", user.getProfilePictureUrl() != null ? user.getProfilePictureUrl() : "",
-            "followerCount", user.getFollowerCount(),
-            "followingCount", user.getFollowingCount(),
-            "postCount", user.getPostCount(),
-            "isPublic", user.getIsPublic()
-        ));
+        return Optional.of(mapToProfileResponse(user, null));
+    }
+    
+    private ProfileResponse mapToProfileResponse(Users user, String currentUsername) {
+        ProfileResponse response = new ProfileResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setProfilePictureUrl(user.getProfilePictureUrl());
+        response.setIsPublic(user.getIsPublic());
+        response.setPostsCount(user.getPostCount());
+        response.setFollowersCount(user.getFollowerCount());
+        response.setFollowingCount(user.getFollowingCount());
+        return response;
     }
 }

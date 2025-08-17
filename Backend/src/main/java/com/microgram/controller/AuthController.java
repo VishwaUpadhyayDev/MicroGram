@@ -3,6 +3,7 @@ package com.microgram.controller;
 import com.microgram.dto.JwtAuthResponse;
 import com.microgram.dto.LoginRequest;
 import com.microgram.dto.SignupRequest;
+import com.microgram.dto.ApiDefaultResponse;
 import com.microgram.model.AuthProvider;
 import com.microgram.model.Users;
 import com.microgram.repository.UserRepository;
@@ -23,8 +24,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -48,15 +47,15 @@ public class AuthController {
 
     @Operation(summary = "User login", description = "Authenticate user with username/email and password")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Login successful", 
+        @ApiResponse(responseCode = "200", description = "Login successful",
                     content = @Content(schema = @Schema(implementation = JwtAuthResponse.class))),
-        @ApiResponse(responseCode = "401", description = "Invalid credentials", 
+        @ApiResponse(responseCode = "401", description = "Invalid credentials",
                     content = @Content(schema = @Schema(implementation = String.class))),
-        @ApiResponse(responseCode = "400", description = "Invalid request format", 
+        @ApiResponse(responseCode = "400", description = "Invalid request format",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtAuthResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
                 loginRequest.getUsernameOrEmail(),
@@ -72,23 +71,21 @@ public class AuthController {
 
     @Operation(summary = "User registration", description = "Register a new user account")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "User registered successfully", 
+        @ApiResponse(responseCode = "201", description = "User registered successfully",
                     content = @Content(schema = @Schema(implementation = String.class))),
-        @ApiResponse(responseCode = "400", description = "Username or email already exists", 
+        @ApiResponse(responseCode = "400", description = "Username or email already exists",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<ApiDefaultResponse> registerUser(@Valid @RequestBody SignupRequest signupRequest) {
         if (userRepository.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity
-                .badRequest()
-                .body("Username is already taken");
+            return ResponseEntity.badRequest()
+                .body(new ApiDefaultResponse("Username is already taken", false));
         }
 
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity
-                .badRequest()
-                .body("Email is already registered");
+            return ResponseEntity.badRequest()
+                .body(new ApiDefaultResponse("Email is already registered", false));
         }
 
         Users user = new Users();
@@ -100,18 +97,19 @@ public class AuthController {
 
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiDefaultResponse("User registered successfully", true));
     }
     
     @Operation(summary = "User logout", description = "Logout current user session", 
               security = @SecurityRequirement(name = "Bearer Authentication"))
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Logout successful", 
+        @ApiResponse(responseCode = "200", description = "Logout successful",
                     content = @Content(schema = @Schema(implementation = String.class)))
     })
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser() {
+    public ResponseEntity<ApiDefaultResponse> logoutUser() {
         SecurityContextHolder.clearContext();
-        return ResponseEntity.ok().body("Logged out successfully");
+        return ResponseEntity.ok(new ApiDefaultResponse("Logged out successfully", true));
     }
 }

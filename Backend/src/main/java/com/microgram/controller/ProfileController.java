@@ -1,7 +1,9 @@
 package com.microgram.controller;
 
 import com.microgram.dto.ProfileUpdateRequest;
+import com.microgram.dto.ProfileResponse;
 import com.microgram.service.ProfileService;
+import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,12 +46,11 @@ public class ProfileController {
     })
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getMyProfile(Authentication authentication) {
+    public ResponseEntity<ProfileResponse> getMyProfile(Authentication authentication) {
         String username = authentication.getName();
-        Optional<Map<String, Object>> profile = profileService.getMyProfile(username);
+        Optional<ProfileResponse> profile = profileService.getMyProfile(username);
         
-        return profile.map(ResponseEntity::ok)
-                     .orElse(ResponseEntity.notFound().build());
+        return profile.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Get user profile by username", 
@@ -67,14 +68,13 @@ public class ProfileController {
     })
     @GetMapping("/{username}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> getUserProfile(
+    public ResponseEntity<ProfileResponse> getUserProfile(
             @Parameter(description = "Username to get profile for", example = "alex_traveler") 
             @PathVariable String username, Authentication authentication) {
         String currentUsername = authentication != null ? authentication.getName() : null;
-        Optional<Map<String, Object>> profile = profileService.getUserProfile(username, currentUsername);
+        Optional<ProfileResponse> profile = profileService.getUserProfile(username, currentUsername);
         
-        return profile.map(ResponseEntity::ok)
-                     .orElse(ResponseEntity.notFound().build());
+        return profile.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "Update current user profile", 
@@ -92,12 +92,8 @@ public class ProfileController {
     })
     @PutMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> updateProfile(Authentication authentication, 
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                description = "Profile update request",
-                content = @Content(schema = @Schema(implementation = ProfileUpdateRequest.class))
-            )
-            @RequestBody ProfileUpdateRequest request) {
+    public ResponseEntity<ProfileResponse> updateProfile(Authentication authentication, 
+            @Valid @RequestBody ProfileUpdateRequest request) {
         String username = authentication.getName();
         
         Map<String, String> updates = new HashMap<>();
@@ -106,9 +102,9 @@ public class ProfileController {
         if (request.getProfilePictureUrl() != null) updates.put("profilePictureUrl", request.getProfilePictureUrl());
         if (request.getIsPublic() != null) updates.put("isPublic", request.getIsPublic());
         
-        Optional<Map<String, Object>> profile = profileService.updateProfile(username, updates);
+        Optional<ProfileResponse> profile = profileService.updateProfile(username, updates);
         
-        return profile.map(ResponseEntity::ok)
-                     .orElse(ResponseEntity.notFound().build());
+        return profile.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
 }

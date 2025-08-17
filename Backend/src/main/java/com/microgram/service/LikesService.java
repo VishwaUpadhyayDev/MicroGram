@@ -27,13 +27,17 @@ public class LikesService {
         List<Likes> likes = likesRepository.findByPostId(postId);
         
         return likes.stream()
-            .map(like -> new LikesDTO(
-                like.getId(),
-                like.getUserId(),
-                like.getPostId(),
-                like.getCreatedAt()
-            ))
+            .map(this::mapToLikesDTO)
             .collect(Collectors.toList());
+    }
+    
+    private LikesDTO mapToLikesDTO(Likes like) {
+        return new LikesDTO(
+            like.getId(),
+            like.getUserId(),
+            like.getPostId(),
+            like.getCreatedAt()
+        );
     }
     
     public boolean addLike(Long postId, Long userId) {
