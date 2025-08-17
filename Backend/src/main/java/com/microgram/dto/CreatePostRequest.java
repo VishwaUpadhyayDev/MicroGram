@@ -3,6 +3,7 @@ package com.microgram.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.web.multipart.MultipartFile;
 
 @Schema(description = "Request to create a new post")
 public class CreatePostRequest {
@@ -15,8 +16,8 @@ public class CreatePostRequest {
     @NotBlank(message = "Content cannot be blank")
     private String content;
     
-    @Schema(description = "Optional image URL", example = "https://microgram-images.s3.amazonaws.com/posts/mountain-view-2024.jpg")
-    private String imageUrl;
+    @Schema(description = "Optional image file", type = "string", format = "binary")
+    private MultipartFile image;
 
     public Long getUserId() {
         return userId;
@@ -34,11 +35,11 @@ public class CreatePostRequest {
         this.content = content;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }
