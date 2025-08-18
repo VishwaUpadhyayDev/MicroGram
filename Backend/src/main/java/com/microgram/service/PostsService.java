@@ -11,6 +11,7 @@ import com.microgram.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +30,9 @@ public class PostsService {
     
     @Autowired
     private CommentsRepository commentsRepository;
+    
+    @Autowired
+    private StorageService storageService;
 
     public List<PostsDTO> getPostsByUserId(Long userId) {
         List<Posts> posts = postRepository.findByUserId(userId);
@@ -52,12 +56,17 @@ public class PostsService {
         );
     }
     
-    public boolean addPost(CreatePostRequest request) {
+    public boolean addPost(CreatePostRequest request) throws IOException {
         Posts post = new Posts();
         post.setUserId(request.getUserId());
         post.setContent(request.getContent());
-        post.setImageUrl(request.getImageUrl());
         
+        String imageUrl = null;
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+            imageUrl = storageService.uploadImage(request.getImage());
+        }
+        
+        post.setImageUrl(imageUrl);
         postRepository.save(post);
         return true;
     }

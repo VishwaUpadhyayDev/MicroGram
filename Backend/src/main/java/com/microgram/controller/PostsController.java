@@ -15,10 +15,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -57,17 +60,22 @@ public class PostsController {
         @ApiResponse(responseCode = "201", description = "Post created successfully"),
         @ApiResponse(responseCode = "500", description = "Failed to create post")
     })
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ApiDefaultResponse> addPost(@Valid @RequestBody CreatePostRequest request) {
-        boolean success = postsService.addPost(request);
-        
-        if (success) {
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(new ApiDefaultResponse("Post created successfully", true));
-        } else {
+    public ResponseEntity<ApiDefaultResponse> addPost(@Valid @ModelAttribute CreatePostRequest request) {
+        try {
+            boolean success = postsService.addPost(request);
+            
+            if (success) {
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new ApiDefaultResponse("Post created successfully", true));
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ApiDefaultResponse("Failed to create post", false));
+            }
+        } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiDefaultResponse("Failed to create post", false));
+                    .body(new ApiDefaultResponse("Failed to upload image: " + e.getMessage(), false));
         }
     }
     
