@@ -45,7 +45,7 @@ public class StorageService {
         
         String uploadUrl = supabaseUrl + "/object/" + bucketName + "/" + fileName;
         
-        ResponseEntity<String> response = restTemplate.exchange(w
+        ResponseEntity<String> response = restTemplate.exchange(
             uploadUrl, 
             HttpMethod.POST, 
             requestEntity, 
